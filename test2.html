@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Тест по теме «Линейная функция» (9 класс, ОГЭ)</title>
+    <style>
+        :root {
+            --bg-color: #f4f7f6;
+            --card-bg: #ffffff;
+            --text-color: #333333;
+            --primary-color: #4a90e2;
+            --success-color: #2ecc71;
+            --error-color: #e74c3c;
+            --border-color: #e0e0e0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .quiz-container {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            max-width: 650px;
+            width: 100%;
+            padding: 30px;
+            box-sizing: border-box;
+        }
+
+        h1 {
+            font-size: 22px;
+            margin-top: 0;
+            color: #2c3e50;
+            border-bottom: 2px solid var(--bg-color);
+            padding-bottom: 15px;
+        }
+
+        .meta-info {
+            font-size: 13px;
+            color: #7f8c8d;
+            margin-bottom: 20px;
+        }
+
+        .question-box {
+            display: none;
+        }
+
+        .question-box.active {
+            display: block;
+        }
+
+        .question-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #34495e;
+        }
+
+        .question-text {
+            font-size: 17px;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .options-list {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 20px 0;
+        }
+
+        .option-item {
+            background-color: #f8f9fa;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 14px 18px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 15px;
+        }
+
+        .option-item:hover {
+            background-color: #eef2f7;
+            border-color: var(--primary-color);
+        }
+
+        .option-item.correct {
+            background-color: #e8f8f0;
+            border-color: var(--success-color);
+            color: #1e7e34;
+            font-weight: 500;
+        }
+
+        .option-item.incorrect {
+            background-color: #fde8e8;
+            border-color: var(--error-color);
+            color: #bd2130;
+        }
+
+        .option-item.disabled {
+            pointer-events: none;
+        }
+
+        .feedback {
+            margin-top: 15px;
+            padding: 12px 15px;
+            border-radius: 6px;
+            font-size: 14px;
+            line-height: 1.4;
+            display: none;
+        }
+
+        .feedback.visible {
+            display: block;
+        }
+
+        .feedback.correct-fb {
+            background-color: #e8f8f0;
+            color: #1e7e34;
+            border-left: 4px solid var(--success-color);
+        }
+
+        .feedback.incorrect-fb {
+            background-color: #fde8e8;
+            color: #bd2130;
+            border-left: 4px solid var(--error-color);
+        }
+
+        .hint-btn {
+            background: none;
+            border: none;
+            color: var(--primary-color);
+            cursor: pointer;
+            font-size: 14px;
+            padding: 0;
+            margin-bottom: 15px;
+            text-decoration: underline;
+        }
+
+        .hint-text {
+            display: none;
+            background-color: #fff9e6;
+            border-left: 4px solid #f1c40f;
+            padding: 10px 15px;
+            font-size: 14px;
+            color: #7f6000;
+            margin-bottom: 15px;
+            border-radius: 4px;
+        }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 25px;
+        }
+
+        button.nav-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-size: 15px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        button.nav-btn:hover {
+            background-color: #357abd;
+        }
+
+        button.nav-btn:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+
+        .result-box {
+            display: none;
+            text-align: center;
+        }
+
+        .result-box h2 {
+            color: #2c3e50;
+        }
+
+        .score {
+            font-size: 48px;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+
+<div class="quiz-container">
+    <h1>Тест: Линейная функция (Занятие №2)</h1>
+    <div class="meta-info" id="progress-text">Вопрос 1 из 5</div>
+
+    <!-- Вопросы генерируются через JS, но структура ниже обеспечивает работу -->
+    <div id="quiz-questions"></div>
+
+    <div class="nav-buttons">
+        <button class="nav-btn" id="prev-btn" disabled>Назад</button>
+        <button class="nav-btn" id="next-btn" disabled>Вперед</button>
+    </div>
+
+    <div class="result-box" id="result-box">
+        <h2>Тест завершен!</h2>
+        <div class="score" id="score-text">0 / 5</div>
+        <p id="result-comment"></p>
+        <button class="nav-btn" onclick="location.reload()">Пройти еще раз</button>
+    </div>
+</div>
+
+<script>
+    const quizData = [
+        {
+            topic: "Угловой коэффициент и взаимное расположение графиков",
+            question: "График линейной функции проходит через точку (0; -3) и параллелен прямой y = 2x + 5. Задайте формулой эту функцию.",
+            hint: "Вспомните условие параллельности двух прямых на плоскости. Какой коэффициент определяет наклон прямой и как найти коэффициент b, зная точку пересечения с осью y?",
+            options: [
+                { text: "y = -3x + 2", isCorrect: false, reason: "Неверно. Угловой коэффициент k должен быть равен 2, так как графики параллельных прямых имеют одинаковый угловой коэффициент." },
+                { text: "y = -2x - 3", isCorrect: false, reason: "Неверно. Обратите внимание на знак углового коэффициента k: он должен совпадать с коэффициентом параллельной прямой (k = 2)." },
+                { text: "y = 2x - 3", isCorrect: true, reason: "Верно! Параллельные прямые имеют одинаковый угловой коэффициент k = 2, а свободный член b равен значению функции при x = 0, то есть -3." },
+                { text: "y = 2x + 3", isCorrect: false, reason: "Неверно. Свободный член b отвечает за пересечение с осью ординат и равен ординате точки (0; -3), то есть -3, а не +3." }
+            ]
+        },
+        {
+            topic: "Нули линейной функции",
+            question: "Найдите абсциссу точки пересечения графика функции y = -1,5x + 6 с осью x.",
+            hint: "Точка на оси x всегда имеет координату y = 0. Подставьте это значение в уравнение функции и решите простейшее линейное уравнение.",
+            options: [
+                { text: "-6", isCorrect: false, reason: "Неверно. Приравняв y к нулю, вы получите уравнение -1,5x + 6 = 0. Перенесите слагаемые и аккуратно выполните деление." },
+                { text: "6", isCorrect: false, reason: "Неверно. Значение 6 — это ордината точки пересечения графика с осью y (при x = 0). Для оси x нужно найти значение x, при котором y = 0." },
+                { text: "-4", isCorrect: false, reason: "Неверно с точки зрения знака. При делении 6 на 1,5 или -6 на -1,5 знак результата будет положительным." },
+                { text: "4", isCorrect: true, reason: "Отлично! Точка пересечения с осью x имеет ординату y = 0. Подставив это значение, получаем -1,5x + 6 = 0 => 1,5x = 6 => x = 4." }
+            ]
+        },
+        {
+            topic: "Возрастание и убывание линейной функции",
+            question: "На каком из описаний верно охарактеризован график функции y = kx + b, для которой k > 0 и b < 0?",
+            hint: "Подумайте, за что отвечает коэффициент k (наклон) и коэффициент b (смещение по вертикали) в геометрическом смысле.",
+            options: [
+                { text: "Прямая опускается слева направо и пересекает ось y выше начала координат.", isCorrect: false, reason: "Неверно. Опускание прямой слева направо соответствует отрицательному угловому коэффициенту (k < 0), а пересечение выше начала координат — положительному b > 0." },
+                { text: "Прямая поднимается слева направо и пересекает ось y ниже начала координат.", isCorrect: true, reason: "Верно! Угловой коэффициент k > 0 задает возрастание функции (прямая поднимается), а b < 0 означает, что точка пересечения с осью y лежит ниже точки (0;0)." },
+                { text: "Прямая поднимается слева направо и пересекает ось y выше начала координат.", isCorrect: false, reason: "Неверно. Здесь верно указано направление прямой (k > 0), но знак свободного члена b предполагает пересечение выше оси x (b > 0)." },
+                { text: "Прямая опускается слева направо и пересекает ось y ниже начала координат.", isCorrect: false, reason: "Неверно. Условие k > 0 означает возрастание функции, то есть прямая должна идти вверх при движении слева направо." }
+            ]
+        },
+        {
+            topic: "Вычисление значения аргумента",
+            question: "Функция задана формулой y = -3x + 7. Найдите значение аргумента x, при котором значение функции равно -2.",
+            hint: "Вместо переменной y подставьте число -2 и аккуратно выразите x из полученного уравнения.",
+            options: [
+Use code with caution.
+{ text: "3", isCorrect: true, reason: "Правильно! Подставив y = -2, получаем -2 = -3x + 7 => 3x = 9 => x = 3." },
+{ text: "-3", isCorrect: false, reason: "Неверно. Проверьте знаки при переносе слагаемых: -3x = -2 - 7 => -3x = -9, откуда x = 3." },
+{ text: "5", isCorrect: false, reason: "Неверно. Если подставить x = 5, то y = -3(5) + 7 = -8, что не равно -2." },
+{ text: "13", isCorrect: false, reason: "Неверно. Вероятно, вы ошиблись при арифметических операциях (например, перепутали порядок действий с числами 7 и -2)." }
+]
+},
+{
+topic: "Точка пересечения графиков",
+question: "Найдите координаты точки пересечения графиков функций y = 3x - 2 и y = -x + 6.",
+hint: "В точке пересечения значения функции (y) у обеих прямых одинаковы. Приравняйте правые части уравнений 3x - 2 и -x + 6, найдите x, а затем найдите соответствующий y.",
+options: [
+{ text: "(1; 5)", isCorrect: false, reason: "Неверно. Проверьте подстановкой: для первой функции при x = 1 получаем y = 1, а для второй y = 5. Значения не совпадают." },
+{ text: "(4; 2)", isCorrect: false, reason: "Неверно. Перепутаны местами координаты x и y или допущена ошибка в расчетах. Подставьте x = 4 в уравнения." },
+{ text: "(2; 4)", isCorrect: true, reason: "Верно! Приравняв правые части 3x - 2 = -x + 6, получаем 4x = 8 => x = 2. Находим y = 3(2) - 2 = 4. Точка пересечения — (2; 4)." },
+{ text: "(2; -4)", isCorrect: false, reason: "Неверно. Значение ординаты y для найденного x = 2 положительно: 3 * 2 - 2 = 4." }
+]
+}
+];
+let currentQuestionIdx = 0;
+let score = 0;
+const userAnswers = new Array(quizData.length).fill(null);
+const questionsContainer = document.getElementById('quiz-questions');
+const prevBtn = document.getElementById('prev-btn');
+const nextBtn = document.getElementById('next-btn');
+const progressText = document.getElementById('progress-text');
+const resultBox = document.getElementById('result-box');
+function initQuiz() {
+quizData.forEach((q, qIdx) => {
+const qBox = document.createElement('div');
+qBox.className = question-box ${qIdx === 0 ? 'active' : ''};
+qBox.id = qbox-${qIdx};
+qBox.innerHTML = <div class="question-title">Тема: ${q.topic}</div> <div class="question-text">${q.question}</div> <button class="hint-btn" onclick="toggleHint(${qIdx})">Показать подсказку</button> <div class="hint-text" id="hint-${qIdx}">${q.hint}</div> <ul class="options-list"> ${q.options.map((opt, oIdx) =>
+${opt.text}
+).join('')} </ul> <div class="feedback" id="feedback-${qIdx}"></div> ;
+questionsContainer.appendChild(qBox);
+});
+updateNav();
+}
+window.toggleHint = function(qIdx) {
+const hintEl = document.getElementById(hint-${qIdx});
+hintEl.style.display = hintEl.style.display === 'block' ? 'none' : 'block';
+};
+window.selectOption = function(qIdx, oIdx, element) {
+if (userAnswers[qIdx] !== null) return; // Запрет повторного выбора
+const question = quizData[qIdx];
+const selectedOption = question.options[oIdx];
+userAnswers[qIdx] = oIdx;
+const container = document.getElementById(qbox-${qIdx});
+const items = container.querySelectorAll('.option-item');
+const feedbackEl = document.getElementById(feedback-${qIdx});
+items.forEach((item) => item.classList.add('disabled'));
+if (selectedOption.isCorrect) {
+element.classList.add('correct');
+feedbackEl.className = "feedback visible correct-fb";
+feedbackEl.innerText = selectedOption.reason;
+score++;
+} else {
+element.classList.add('incorrect');
+feedbackEl.className = "feedback visible incorrect-fb";
+feedbackEl.innerText = selectedOption.reason;
+// Подсвечиваем правильный
+const correctIdx = question.options.findIndex(o => o.isCorrect);
+items[correctIdx].classList.add('correct');
+}
+nextBtn.disabled = false;
+};
+function updateNav() {
+if (currentQuestionIdx >= quizData.length) {
+showResults();
+return;
+}
+progressText.style.display = 'block';
+progressText.innerText = Вопрос ${currentQuestionIdx + 1} из ${quizData.length};
+const boxes = document.querySelectorAll('.question-box');
+boxes.forEach((box, idx) => {
+box.classList.toggle('active', idx === currentQuestionIdx);
+});
+prevBtn.disabled = currentQuestionIdx === 0;
+// Разрешаем переход вперед только если на вопрос уже ответили
+nextBtn.disabled = userAnswers[currentQuestionIdx] === null;
+if (currentQuestionIdx === quizData.length - 1) {
+nextBtn.innerText = "Завершить";
+} else {
+nextBtn.innerText = "Вперед";
+}
+}
+function showResults() {
+questionsContainer.style.display = 'none';
+document.querySelector('.nav-buttons').style.display = 'none';
+progressText.style.display = 'none';
+resultBox.style.display = 'block';
+document.getElementById('score-text').innerText = ${score} / ${quizData.length};
+const commentEl = document.getElementById('result-comment');
+if (score === quizData.length) {
+commentEl.innerText = "Великолепно! Тема усвоена на все 100%. Вы готовы к более сложным заданиям СУНЦ УрФУ.";
+} else if (score >= 3) {
+commentEl.innerText = "Хороший результат! Но стоит уделить внимание деталям и разобрать ошибки в неверных ответах.";
+} else {
+commentEl.innerText = "Тема требует повторения. Рекомендуется еще раз изучить параграф 1.2 сборника задач и попробовать снова.";
+}
+}
+prevBtn.addEventListener('click', () => {
+if (currentQuestionIdx > 0) {
+currentQuestionIdx--;
+updateNav();
+}
+});
+nextBtn.addEventListener('click', () => {
+currentQuestionIdx++;
+updateNav();
+});
+initQuiz();
+
+
