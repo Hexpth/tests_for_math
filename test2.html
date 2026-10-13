@@ -207,7 +207,7 @@
     <h1>Тест: Линейная функция (Занятие №2)</h1>
     <div class="meta-info" id="progress-text">Вопрос 1 из 5</div>
 
-    <!-- Вопросы генерируются через JS, но структура ниже обеспечивает работу -->
+    <!-- Вопросы генерируются через JS -->
     <div id="quiz-questions"></div>
 
     <div class="nav-buttons">
@@ -224,6 +224,7 @@
 </div>
 
 <script>
+    // Массив данных со всеми 5 вопросами
     const quizData = [
         {
             topic: "Угловой коэффициент и взаимное расположение графиков",
@@ -249,132 +250,146 @@
         },
         {
             topic: "Возрастание и убывание линейной функции",
-            question: "На каком из описаний верно охарактеризован график функции y = kx + b, для которой k > 0 и b < 0?",
-            hint: "Подумайте, за что отвечает коэффициент k (наклон) и коэффициент b (смещение по вертикали) в геометрическом смысле.",
+            question: "При каком значении коэффициента p линейная функция y = (2p - 8)x + 3 является строго убывающей?",
+            hint: "Линейная функция вида y = kx + b убывает тогда и только тогда, когда её угловой коэффициент k строго меньше нуля. В данном случае в роли k выступает выражение (2p - 8).",
             options: [
-                { text: "Прямая опускается слева направо и пересекает ось y выше начала координат.", isCorrect: false, reason: "Неверно. Опускание прямой слева направо соответствует отрицательному угловому коэффициенту (k < 0), а пересечение выше начала координат — положительному b > 0." },
-                { text: "Прямая поднимается слева направо и пересекает ось y ниже начала координат.", isCorrect: true, reason: "Верно! Угловой коэффициент k > 0 задает возрастание функции (прямая поднимается), а b < 0 означает, что точка пересечения с осью y лежит ниже точки (0;0)." },
-                { text: "Прямая поднимается слева направо и пересекает ось y выше начала координат.", isCorrect: false, reason: "Неверно. Здесь верно указано направление прямой (k > 0), но знак свободного члена b предполагает пересечение выше оси x (b > 0)." },
-                { text: "Прямая опускается слева направо и пересекает ось y ниже начала координат.", isCorrect: false, reason: "Неверно. Условие k > 0 означает возрастание функции, то есть прямая должна идти вверх при движении слева направо." }
+                { text: "p > 4", isCorrect: false, reason: "Неверно. Если p > 4, то выражение (2p - 8) будет больше нуля, а значит, угловой коэффициент будет положительным, и функция будет возрастать." },
+                { text: "p < 4", isCorrect: true, reason: "Верно! Для убывания функции необходимо, чтобы угловой коэффициент k < 0. Составим неравенство: 2p - 8 < 0 => 2p < 8 => p < 4." },
+                { text: "p < -4", isCorrect: false, reason: "Неполный или неверный ответ. Хотя при p < -4 функция убывает, она также убывает и при других значениях (например, при p = 0). Граница находится в точке 4." },
+                { text: "p = 4", isCorrect: false, reason: "Неверно. При p = 4 угловой коэффициент становится равен нулю: функция превращается в y = 3. Она становится постоянной (ни возрастает, ни убывает)." }
             ]
         },
         {
-            topic: "Вычисление значения аргумента",
-            question: "Функция задана формулой y = -3x + 7. Найдите значение аргумента x, при котором значение функции равно -2.",
-            hint: "Вместо переменной y подставьте число -2 и аккуратно выразите x из полученного уравнения.",
+            topic: "Принадлежность точки графику функции",
+            question: "Проходит ли график функции y = -4x + 7 через точку А(-2; 15)?",
+            hint: "Подставьте координаты точки А в уравнение функции вместо x и y: значение -2 вместо x, а 15 вместо y. Проверьте, получится ли верное числовое равенство.",
             options: [
+                { text: "Да, проходит", isCorrect: true, reason: "Верно! Подставляем x = -2 в уравнение: y = -4 * (-2) + 7 = 8 + 7 = 15. Числовое равенство 15 = 15 верно." },
 Use code with caution.
-{ text: "3", isCorrect: true, reason: "Правильно! Подставив y = -2, получаем -2 = -3x + 7 => 3x = 9 => x = 3." },
-{ text: "-3", isCorrect: false, reason: "Неверно. Проверьте знаки при переносе слагаемых: -3x = -2 - 7 => -3x = -9, откуда x = 3." },
-{ text: "5", isCorrect: false, reason: "Неверно. Если подставить x = 5, то y = -3(5) + 7 = -8, что не равно -2." },
-{ text: "13", isCorrect: false, reason: "Неверно. Вероятно, вы ошиблись при арифметических операциях (например, перепутали порядок действий с числами 7 и -2)." }
+{ text: "Нет, не проходит", isCorrect: false, reason: "Неверно. Убедитесь, что вы правильно перемножили два отрицательных числа: -4 умножить на -2 дает положительное число +8." },
+{ text: "График проходит только при положительных x", isCorrect: false, reason: "Неверно. Линейная функция определена для любых x. Данная точка с отрицательной абсциссой лежит на графике." },
+{ text: "Определить невозможно", isCorrect: false, reason: "Неверно. Мы знаем и точные координаты точки, и аналитическую формулу функции, поэтому положение точки определяется однозначно." }
 ]
 },
 {
-topic: "Точка пересечения графиков",
-question: "Найдите координаты точки пересечения графиков функций y = 3x - 2 и y = -x + 6.",
-hint: "В точке пересечения значения функции (y) у обеих прямых одинаковы. Приравняйте правые части уравнений 3x - 2 и -x + 6, найдите x, а затем найдите соответствующий y.",
+topic: "Геометрический смысл коэффициента b",
+question: "В какой точке график функции y = 0.5x - 7 пересекает ось ординат (ось y)?",
+hint: "Любая точка, лежащая на оси y, имеет абсциссу x = 0. Подставьте x = 0 в уравнение функции и найдите соответствующее значение y.",
 options: [
-{ text: "(1; 5)", isCorrect: false, reason: "Неверно. Проверьте подстановкой: для первой функции при x = 1 получаем y = 1, а для второй y = 5. Значения не совпадают." },
-{ text: "(4; 2)", isCorrect: false, reason: "Неверно. Перепутаны местами координаты x и y или допущена ошибка в расчетах. Подставьте x = 4 в уравнения." },
-{ text: "(2; 4)", isCorrect: true, reason: "Верно! Приравняв правые части 3x - 2 = -x + 6, получаем 4x = 8 => x = 2. Находим y = 3(2) - 2 = 4. Точка пересечения — (2; 4)." },
-{ text: "(2; -4)", isCorrect: false, reason: "Неверно. Значение ординаты y для найденного x = 2 положительно: 3 * 2 - 2 = 4." }
+{ text: "(14; 0)", isCorrect: false, reason: "Неверно. Это точка пересечения с осью абсцисс (осью x), так как здесь y = 0, а нам нужна ось ординат." },
+{ text: "(0; 7)", isCorrect: false, reason: "Неверно. Обратите внимание на знак перед свободным членом в исходной формуле функции: там стоит минус." },
+{ text: "(-7; 0)", isCorrect: false, reason: "Неверно. Координаты перепутаны местами. На первом месте всегда пишется x, а для оси y координата x должна быть строго равна нулю." },
+{ text: "(0; -7)", isCorrect: true, reason: "Абсолютно верно! При x = 0 получаем y = 0.5 * 0 - 7 = -7. Свободный член b всегда показывает ординату точки пересечения с осью y." }
 ]
 }
 ];
-let currentQuestionIdx = 0;
+let currentQuestionIndex = 0;
 let score = 0;
 const userAnswers = new Array(quizData.length).fill(null);
 const questionsContainer = document.getElementById('quiz-questions');
+const progressText = document.getElementById('progress-text');
 const prevBtn = document.getElementById('prev-btn');
 const nextBtn = document.getElementById('next-btn');
-const progressText = document.getElementById('progress-text');
 const resultBox = document.getElementById('result-box');
+const scoreText = document.getElementById('score-text');
+const resultComment = document.getElementById('result-comment');
 function initQuiz() {
-quizData.forEach((q, qIdx) => {
-const qBox = document.createElement('div');
-qBox.className = question-box ${qIdx === 0 ? 'active' : ''};
-qBox.id = qbox-${qIdx};
-qBox.innerHTML = <div class="question-title">Тема: ${q.topic}</div> <div class="question-text">${q.question}</div> <button class="hint-btn" onclick="toggleHint(${qIdx})">Показать подсказку</button> <div class="hint-text" id="hint-${qIdx}">${q.hint}</div> <ul class="options-list"> ${q.options.map((opt, oIdx) =>
+quizData.forEach((data, index) => {
+const questionBox = document.createElement('div');
+questionBox.className = question-box ${index === 0 ? 'active' : ''};
+questionBox.id = q-${index};
+questionBox.innerHTML = <div class="question-title">${data.topic}</div> <div class="question-text">${data.question}</div> <button class="hint-btn" onclick="toggleHint(${index})">Показать подсказку</button> <div class="hint-text" id="hint-${index}">${data.hint}</div> <ul class="options-list"> ${data.options.map((opt, optIndex) =>
 ${opt.text}
-).join('')} </ul> <div class="feedback" id="feedback-${qIdx}"></div> ;
-questionsContainer.appendChild(qBox);
+).join('')} </ul> <div class="feedback" id="fb-${index}"></div> ;
+questionsContainer.appendChild(questionBox);
 });
-updateNav();
+updateNavigation();
 }
-window.toggleHint = function(qIdx) {
-const hintEl = document.getElementById(hint-${qIdx});
-hintEl.style.display = hintEl.style.display === 'block' ? 'none' : 'block';
+window.toggleHint = function(qIndex) {
+const hintBlock = document.getElementById(hint-${qIndex});
+const hintBtn = hintBlock.previousElementSibling;
+if (hintBlock.style.display === 'block') {
+hintBlock.style.display = 'none';
+hintBtn.textContent = 'Показать подсказку';
+} else {
+hintBlock.style.display = 'block';
+hintBtn.textContent = 'Скрыть подсказку';
+}
 };
-window.selectOption = function(qIdx, oIdx, element) {
-if (userAnswers[qIdx] !== null) return; // Запрет повторного выбора
-const question = quizData[qIdx];
-const selectedOption = question.options[oIdx];
-userAnswers[qIdx] = oIdx;
-const container = document.getElementById(qbox-${qIdx});
+window.selectOption = function(qIndex, optIndex, element) {
+if (userAnswers[qIndex] !== null) return;
+const question = quizData[qIndex];
+const selectedOption = question.options[optIndex];
+userAnswers[qIndex] = optIndex;
+const container = document.getElementById(q-${qIndex});
 const items = container.querySelectorAll('.option-item');
-const feedbackEl = document.getElementById(feedback-${qIdx});
-items.forEach((item) => item.classList.add('disabled'));
+const feedbackDiv = document.getElementById(fb-${qIndex});
+items.forEach((item, idx) => {
+item.classList.add('disabled');
+if (question.options[idx].isCorrect) {
+item.classList.add('correct');
+}
+});
 if (selectedOption.isCorrect) {
 element.classList.add('correct');
-feedbackEl.className = "feedback visible correct-fb";
-feedbackEl.innerText = selectedOption.reason;
+feedbackDiv.className = 'feedback visible correct-fb';
+feedbackDiv.textContent = selectedOption.reason;
 score++;
 } else {
 element.classList.add('incorrect');
-feedbackEl.className = "feedback visible incorrect-fb";
-feedbackEl.innerText = selectedOption.reason;
-// Подсвечиваем правильный
-const correctIdx = question.options.findIndex(o => o.isCorrect);
-items[correctIdx].classList.add('correct');
+feedbackDiv.className = 'feedback visible incorrect-fb';
+feedbackDiv.textContent = selectedOption.reason;
 }
 nextBtn.disabled = false;
 };
-function updateNav() {
-if (currentQuestionIdx >= quizData.length) {
-showResults();
-return;
-}
-progressText.style.display = 'block';
-progressText.innerText = Вопрос ${currentQuestionIdx + 1} из ${quizData.length};
-const boxes = document.querySelectorAll('.question-box');
-boxes.forEach((box, idx) => {
-box.classList.toggle('active', idx === currentQuestionIdx);
-});
-prevBtn.disabled = currentQuestionIdx === 0;
-// Разрешаем переход вперед только если на вопрос уже ответили
-nextBtn.disabled = userAnswers[currentQuestionIdx] === null;
-if (currentQuestionIdx === quizData.length - 1) {
-nextBtn.innerText = "Завершить";
+function updateNavigation() {
+progressText.textContent = Вопрос ${currentQuestionIndex + 1} из ${quizData.length};
+prevBtn.disabled = currentQuestionIndex === 0;
+if (userAnswers[currentQuestionIndex] !== null) {
+nextBtn.disabled = false;
+if (currentQuestionIndex === quizData.length - 1) {
+nextBtn.textContent = 'Завершить';
 } else {
-nextBtn.innerText = "Вперед";
+nextBtn.textContent = 'Вперед';
+}
+} else {
+nextBtn.disabled = true;
+nextBtn.textContent = 'Вперед';
 }
 }
+nextBtn.addEventListener('click', () => {
+if (currentQuestionIndex < quizData.length - 1) {
+document.getElementById(q-${currentQuestionIndex}).classList.remove('active');
+currentQuestionIndex++;
+document.getElementById(q-${currentQuestionIndex}).classList.add('active');
+updateNavigation();
+} else {
+showResults();
+}
+});
+prevBtn.addEventListener('click', () => {
+if (currentQuestionIndex > 0) {
+document.getElementById(q-${currentQuestionIndex}).classList.remove('active');
+currentQuestionIndex--;
+document.getElementById(q-${currentQuestionIndex}).classList.add('active');
+updateNavigation();
+}
+});
 function showResults() {
 questionsContainer.style.display = 'none';
 document.querySelector('.nav-buttons').style.display = 'none';
 progressText.style.display = 'none';
-resultBox.style.display = 'block';
-document.getElementById('score-text').innerText = ${score} / ${quizData.length};
-const commentEl = document.getElementById('result-comment');
+scoreText.textContent = ${score} / ${quizData.length};
+let comment = "";
 if (score === quizData.length) {
-commentEl.innerText = "Великолепно! Тема усвоена на все 100%. Вы готовы к более сложным заданиям СУНЦ УрФУ.";
+comment = "Великолепный результат! Вы идеально сдали тему линейной функции. Удачи на ОГЭ!";
 } else if (score >= 3) {
-commentEl.innerText = "Хороший результат! Но стоит уделить внимание деталям и разобрать ошибки в неверных ответах.";
+comment = "Хороший результат! Большинство задач решено верно, но стоит повторить некоторые правила и знаки.";
 } else {
-commentEl.innerText = "Тема требует повторения. Рекомендуется еще раз изучить параграф 1.2 сборника задач и попробовать снова.";
+comment = "Тема усвоена слабо. Рекомендуется повторить геометрический смысл коэффициентов k и b, а также потренироваться в решении уравнений.";
 }
+resultComment.textContent = comment;
+resultBox.style.display = 'block';
 }
-prevBtn.addEventListener('click', () => {
-if (currentQuestionIdx > 0) {
-currentQuestionIdx--;
-updateNav();
-}
-});
-nextBtn.addEventListener('click', () => {
-currentQuestionIdx++;
-updateNav();
-});
 initQuiz();
-
 
