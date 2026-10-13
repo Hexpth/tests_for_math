@@ -199,15 +199,22 @@
             color: var(--primary-color);
             margin: 20px 0;
         }
+        
+        .back-home-btn {
+            background-color: #7f8c8d;
+            margin-top: 10px;
+        }
+        .back-home-btn:hover {
+            background-color: #626d6e;
+        }
     </style>
 </head>
 <body>
 
 <div class="quiz-container">
     <h1>Тест: Линейная функция (Занятие №2)</h1>
-    <div class="meta-info" id="progress-text">Вопрос 1 из 5</div>
+    <div class="meta-info" id="progress-text">Вопрос 1 из 10</div>
 
-    <!-- Вопросы генерируются через JS -->
     <div id="quiz-questions"></div>
 
     <div class="nav-buttons">
@@ -217,14 +224,14 @@
 
     <div class="result-box" id="result-box">
         <h2>Тест завершен!</h2>
-        <div class="score" id="score-text">0 / 5</div>
+        <div class="score" id="score-text">0 / 10</div>
         <p id="result-comment"></p>
-        <button class="nav-btn" onclick="location.reload()">Пройти еще раз</button>
+        <button class="nav-btn" onclick="location.reload()">Пройти еще раз</button><br>
+        <button class="nav-btn back-home-btn" onclick="window.location.href='./'">На главную</button>
     </div>
 </div>
 
 <script>
-    // Массив данных со всеми 5 вопросами
     const quizData = [
         {
             topic: "Угловой коэффициент и взаимное расположение графиков",
@@ -265,131 +272,219 @@
             hint: "Подставьте координаты точки А в уравнение функции вместо x и y: значение -2 вместо x, а 15 вместо y. Проверьте, получится ли верное числовое равенство.",
             options: [
                 { text: "Да, проходит", isCorrect: true, reason: "Верно! Подставляем x = -2 в уравнение: y = -4 * (-2) + 7 = 8 + 7 = 15. Числовое равенство 15 = 15 верно." },
-Use code with caution.
-{ text: "Нет, не проходит", isCorrect: false, reason: "Неверно. Убедитесь, что вы правильно перемножили два отрицательных числа: -4 умножить на -2 дает положительное число +8." },
-{ text: "График проходит только при положительных x", isCorrect: false, reason: "Неверно. Линейная функция определена для любых x. Данная точка с отрицательной абсциссой лежит на графике." },
-{ text: "Определить невозможно", isCorrect: false, reason: "Неверно. Мы знаем и точные координаты точки, и аналитическую формулу функции, поэтому положение точки определяется однозначно." }
-]
-},
-{
-topic: "Геометрический смысл коэффициента b",
-question: "В какой точке график функции y = 0.5x - 7 пересекает ось ординат (ось y)?",
-hint: "Любая точка, лежащая на оси y, имеет абсциссу x = 0. Подставьте x = 0 в уравнение функции и найдите соответствующее значение y.",
-options: [
-{ text: "(14; 0)", isCorrect: false, reason: "Неверно. Это точка пересечения с осью абсцисс (осью x), так как здесь y = 0, а нам нужна ось ординат." },
-{ text: "(0; 7)", isCorrect: false, reason: "Неверно. Обратите внимание на знак перед свободным членом в исходной формуле функции: там стоит минус." },
-{ text: "(-7; 0)", isCorrect: false, reason: "Неверно. Координаты перепутаны местами. На первом месте всегда пишется x, а для оси y координата x должна быть строго равна нулю." },
-{ text: "(0; -7)", isCorrect: true, reason: "Абсолютно верно! При x = 0 получаем y = 0.5 * 0 - 7 = -7. Свободный член b всегда показывает ординату точки пересечения с осью y." }
-]
-}
-];
-let currentQuestionIndex = 0;
-let score = 0;
-const userAnswers = new Array(quizData.length).fill(null);
-const questionsContainer = document.getElementById('quiz-questions');
-const progressText = document.getElementById('progress-text');
-const prevBtn = document.getElementById('prev-btn');
-const nextBtn = document.getElementById('next-btn');
-const resultBox = document.getElementById('result-box');
-const scoreText = document.getElementById('score-text');
-const resultComment = document.getElementById('result-comment');
-function initQuiz() {
-quizData.forEach((data, index) => {
-const questionBox = document.createElement('div');
-questionBox.className = question-box ${index === 0 ? 'active' : ''};
-questionBox.id = q-${index};
-questionBox.innerHTML = <div class="question-title">${data.topic}</div> <div class="question-text">${data.question}</div> <button class="hint-btn" onclick="toggleHint(${index})">Показать подсказку</button> <div class="hint-text" id="hint-${index}">${data.hint}</div> <ul class="options-list"> ${data.options.map((opt, optIndex) =>
-${opt.text}
-).join('')} </ul> <div class="feedback" id="fb-${index}"></div> ;
-questionsContainer.appendChild(questionBox);
-});
-updateNavigation();
-}
-window.toggleHint = function(qIndex) {
-const hintBlock = document.getElementById(hint-${qIndex});
-const hintBtn = hintBlock.previousElementSibling;
-if (hintBlock.style.display === 'block') {
-hintBlock.style.display = 'none';
-hintBtn.textContent = 'Показать подсказку';
-} else {
-hintBlock.style.display = 'block';
-hintBtn.textContent = 'Скрыть подсказку';
-}
-};
-window.selectOption = function(qIndex, optIndex, element) {
-if (userAnswers[qIndex] !== null) return;
-const question = quizData[qIndex];
-const selectedOption = question.options[optIndex];
-userAnswers[qIndex] = optIndex;
-const container = document.getElementById(q-${qIndex});
-const items = container.querySelectorAll('.option-item');
-const feedbackDiv = document.getElementById(fb-${qIndex});
-items.forEach((item, idx) => {
-item.classList.add('disabled');
-if (question.options[idx].isCorrect) {
-item.classList.add('correct');
-}
-});
-if (selectedOption.isCorrect) {
-element.classList.add('correct');
-feedbackDiv.className = 'feedback visible correct-fb';
-feedbackDiv.textContent = selectedOption.reason;
-score++;
-} else {
-element.classList.add('incorrect');
-feedbackDiv.className = 'feedback visible incorrect-fb';
-feedbackDiv.textContent = selectedOption.reason;
-}
-nextBtn.disabled = false;
-};
-function updateNavigation() {
-progressText.textContent = Вопрос ${currentQuestionIndex + 1} из ${quizData.length};
-prevBtn.disabled = currentQuestionIndex === 0;
-if (userAnswers[currentQuestionIndex] !== null) {
-nextBtn.disabled = false;
-if (currentQuestionIndex === quizData.length - 1) {
-nextBtn.textContent = 'Завершить';
-} else {
-nextBtn.textContent = 'Вперед';
-}
-} else {
-nextBtn.disabled = true;
-nextBtn.textContent = 'Вперед';
-}
-}
-nextBtn.addEventListener('click', () => {
-if (currentQuestionIndex < quizData.length - 1) {
-document.getElementById(q-${currentQuestionIndex}).classList.remove('active');
-currentQuestionIndex++;
-document.getElementById(q-${currentQuestionIndex}).classList.add('active');
-updateNavigation();
-} else {
-showResults();
-}
-});
-prevBtn.addEventListener('click', () => {
-if (currentQuestionIndex > 0) {
-document.getElementById(q-${currentQuestionIndex}).classList.remove('active');
-currentQuestionIndex--;
-document.getElementById(q-${currentQuestionIndex}).classList.add('active');
-updateNavigation();
-}
-});
-function showResults() {
-questionsContainer.style.display = 'none';
-document.querySelector('.nav-buttons').style.display = 'none';
-progressText.style.display = 'none';
-scoreText.textContent = ${score} / ${quizData.length};
-let comment = "";
-if (score === quizData.length) {
-comment = "Великолепный результат! Вы идеально сдали тему линейной функции. Удачи на ОГЭ!";
-} else if (score >= 3) {
-comment = "Хороший результат! Большинство задач решено верно, но стоит повторить некоторые правила и знаки.";
-} else {
-comment = "Тема усвоена слабо. Рекомендуется повторить геометрический смысл коэффициентов k и b, а также потренироваться в решении уравнений.";
-}
-resultComment.textContent = comment;
-resultBox.style.display = 'block';
-}
-initQuiz();
+                { text: "Нет, не проходит", isCorrect: false, reason: "Неверно. Убедитесь, что вы правильно перемножили два отрицательных числа: -4 умножить на -2 дает положительное число +8." },
+                { text: "График проходит только при положительных x", isCorrect: false, reason: "Неверно. Линейная функция определена для любых x. Данная точка с отрицательной абсциссой лежит на графике." },
+                { text: "Определить невозможно", isCorrect: false, reason: "Неверно. Мы знаем и точные координаты точки, и аналитическую формулу функции, поэтому положение точки определяется однозначно." }
+            ]
+        },
+        {
+            topic: "Геометрический смысл коэффициента b",
+            question: "В какой точке график функции y = 0.5x - 7 пересекает ось ординат (ось y)?",
+            hint: "Любая точка, лежащая на оси y, имеет абсциссу x = 0. Подставьте x = 0 в уравнение функции и найдите соответствующее значение y.",
+            options: [
+                { text: "(14; 0)", isCorrect: false, reason: "Неверно. Это точка пересечения с осью абсцисс (осью x), так как здесь y = 0, а нам нужна ось ординат." },
+                { text: "(0; 7)", isCorrect: false, reason: "Неверно. Обратите внимание на знак перед свободным членом в исходной формуле функции: там стоит минус." },
+                { text: "(-7; 0)", isCorrect: false, reason: "Неверно. Координаты перепутаны местами. На первом месте всегда пишется x, а для оси y координата x должна быть строго равна нулю." },
+                { text: "(0; -7)", isCorrect: true, reason: "Абсолютно верно! При x = 0 получаем y = 0.5 * 0 - 7 = -7. Свободный член b всегда показывает ординату точки пересечения с осью y." }
+            ]
+        },
+        {
+            topic: "Знаки коэффициентов по графику (ОГЭ №11)",
+            question: "График линейной функции y = kx + b расположен во II, III и IV координатных четвертях. Каковы знаки коэффициентов k и b?",
+            hint: "Если прямая не заходит в I четверть (верхнюю правую), подумайте, куда направлен её наклон (k) и где она пересекает вертикальную ось y (b).",
+            options: [
+                { text: "k > 0, b > 0", isCorrect: false, reason: "Неверно. При k > 0 функция возрастает, а при b > 0 она пересекает ось y выше нуля, что неизбежно ведет график через I четверть." },
+                { text: "k < 0, b > 0", isCorrect: false, reason: "Неверно. Если k < 0, прямая идет сверху вниз, но при b > 0 она пересечет ось y в верхней полуплоскости, захватив I четверть." },
+                { text: "k < 0, b < 0", isCorrect: true, reason: "Верно! Поскольку график идет вниз слева направо, функция убывает (k < 0). Так как он пересекает ось y ниже нуля, b < 0. График проходит через II, III и IV четверти." },
+                { text: "k > 0, b < 0", isCorrect: false, reason: "Неверно. При возрастании (k > 0) и старте снизу (b < 0) прямая пересечет ось x и обязательно уйдет наверх в I четверть." }
+            ]
+        },
+        {
+            topic: "Составление уравнения прямой по двум точкам",
+            question: "Составьте уравнение прямой, проходящей через точки M(1; 5) и N(-1; 1).",
+            hint: "Подставьте координаты обеих точек в общий вид линейной функции y = kx + b. Вы получите систему из двух простых уравнений относительно k и b.",
+            options: [
+                { text: "y = 3x + 2", isCorrect: false, reason: "Неверно. Подставим точку M(1;5): 3*(1) + 2 = 5 (верно). Но для N(-1;1): 3*(-1) + 2 = -1, а должно быть 1." },
+                { text: "y = 2x + 3", isCorrect: true, reason: "Отлично! Проверим точки: для M(1): 2*1 + 3 = 5. Для N(-1): 2*(-1) + 3 = 1. Оба равенства верны." },
+                { text: "y = 4x + 1", isCorrect: false, reason: "Неверно. Подстановка координат точки M(1; 5) дает равенство 5 = 4*1 + 1, но точка N(-1; 1) дает 1 = -4 + 1 = -3, что неверно." },
+                { text: "y = -2x + 7", isCorrect: false, reason: "Неверно. Здесь угловой коэффициент k отрицательный, но ординаты точек растут с ростом абсциссы (от 1 до 5), значит k > 0." }
+            ]
+        },
+        {
+            topic: "Точка пересечения двух графиков",
+            question: "Найдите координаты точки пересечения графиков функций y = 3x - 4 и y = -x + 8.",
+            hint: "В точке пересечения значения y равны. Приравняйте правые части уравнений: 3x - 4 = -x + 8. Найдите x, а затем подставьте его в любое уравнение для поиска y.",
+            options: [
+                { text: "(2; 2)", isCorrect: false, reason: "Неверно. При x = 2 первая функция дает y = 3*2 - 4 = 2, а вторая: -2 + 8 = 6. Значения y не совпали." },
+                { text: "(4; 4)", isCorrect: false, reason: "Неверно. Решив уравнение 3x - 4 = -x + 8, мы переносим -x влево: 4x = 12. Отсюда абсцисса x не может равняться 4." },
+                { text: "(3; 5)", isCorrect: true, reason: "Правильно! Приравниваем: 3x - 4 = -x + 8 => 4x = 12 => x = 3. Подставим x = 3 в любое уравнение: y = -3 + 8 = 5. Точка (3; 5)." },
+                { text: "(3; 2)", isCorrect: false, reason: "Абсцисса найдена верно (x = 3), но координата y посчитана с ошибкой. Пересчитайте значение функции в этой точке." }
+            ]
+        },
+        {
+            topic: "Угол наклона и тригонометрический смысл k",
+            question: "Прямая проходит через начало координат и наклонена к положительному направлению оси x под углом 45°. Задайте эту прямую формулой.",
+            hint: "Угловой коэффициент k численно равен тангенсу угла наклона прямой к оси x (k = tg α). Начало координат означает, что свободный член b = 0.",
+            options: [
+                { text: "y = x", isCorrect: true, reason: "Точно! Так как прямая проходит через (0;0), то b = 0. Угловой коэффициент k = tg(45°) = 1. Получаем y = 1*x => y = x." },
+                { text: "y = -x", isCorrect: false, reason: "Неверно. График y = -x наклонен под углом 135° (или -45°), образуя тупой угол с положительным направлением оси x." },
+                { text: "y = 45x", isCorrect: false, reason: "Типичная ошибка. Значение угла в градусах путают с самим коэффициентом. Коэффициент k равен тангенсу угла, а не величине угла." },
+                { text: "y = 0.5x", isCorrect: false, reason: "Неверно. Коэффициент 0.5 соответствует другому углу наклона (приблизительно 26.6°)." }
+            ]
+        },
+        {
+            topic: "Геометрические свойства и площади фигур",
+            question: "Найдите площадь треугольника, ограниченного осями координат и графиком функции y = -2x + 8.",
+            hint: "Найдите точки пересечения прямой с осями координат: (x; 0) и (0; y). Они укажут длины катетов прямоугольного треугольника. Площадь равна половине произведения катетов.",
+            options: [
+                { text: "32", isCorrect: false, reason: "Неверно. Вы перемножили катеты (4 и 8), но забыли разделить результат на 2 согласно формуле площади треугольника." },
+                { text: "16", isCorrect: true, reason: "Превосходно! Точка на оси y (x=0) — это (0; 8), длина первого катета равна 8. На оси x (y=0): -2x + 8 = 0 => x = 4, длина второго катета равна 4. Площадь S = 0.5 * 4 * 8 = 16." },
+                { text: "8", isCorrect: false, reason: "Неверно. Проверьте расчеты пересечения с осями. Длины катетов составляют 4 и 8, пересчитайте площадь." },
+                { text: "24", isCorrect: false, reason: "Неверно. Площадь прямоугольного треугольника находится по формуле S = (a * b) / 2. Катеты здесь равны 4 и 8." }
+            ]
+        }
+    ];
 
+    let currentQuestionIndex = 0;
+    let score = 0;
+    const userAnswers = new Array(quizData.length).fill(null);
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const questionsContainer = document.getElementById('quiz-questions');
+        const progressText = document.getElementById('progress-text');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const resultBox = document.getElementById('result-box');
+        const scoreText = document.getElementById('score-text');
+        const resultComment = document.getElementById('result-comment');
+
+        function initQuiz() {
+            quizData.forEach((data, index) => {
+                const questionBox = document.createElement('div');
+                questionBox.className = `question-box ${index === 0 ? 'active' : ''}`;
+                questionBox.id = `q-${index}`;
+
+                questionBox.innerHTML = `
+                    <div class="question-title">${data.topic}</div>
+                    <div class="question-text">${data.question}</div>
+                    <button class="hint-btn">Показать подсказку</button>
+                    <div class="hint-text" style="display: none;">${data.hint}</div>
+                    <ul class="options-list">
+                        ${data.options.map((opt, optIndex) => `
+                            <li class="option-item" data-opt="${optIndex}">${opt.text}</li>
+                        `).join('')}
+                    </ul>
+                    <div class="feedback"></div>
+                `;
+
+                const hintBtn = questionBox.querySelector('.hint-btn');
+                const hintText = questionBox.querySelector('.hint-text');
+                hintBtn.addEventListener('click', () => {
+                    if (hintText.style.display === 'none') {
+                        hintText.style.display = 'block';
+                        hintBtn.textContent = 'Скрыть подсказку';
+                    } else {
+                        hintText.style.display = 'none';
+                        hintBtn.textContent = 'Показать подсказку';
+                    }
+                });
+
+                const optionItems = questionBox.querySelectorAll('.option-item');
+                optionItems.forEach(item => {
+                    item.addEventListener('click', (e) => {
+                        if (userAnswers[index] !== null) return;
+
+                        const optIndex = parseInt(e.target.getAttribute('data-opt'));
+                        userAnswers[index] = optIndex;
+                        const selectedOption = data.options[optIndex];
+                        const feedbackDiv = questionBox.querySelector('.feedback');
+
+                        optionItems.forEach((optItem, idx) => {
+                            optItem.classList.add('disabled');
+                            if (data.options[idx].isCorrect) {
+                                optItem.classList.add('correct');
+                            }
+                        });
+
+                        if (selectedOption.isCorrect) {
+                            e.target.classList.add('correct');
+                            feedbackDiv.className = 'feedback visible correct-fb';
+                            feedbackDiv.textContent = selectedOption.reason;
+                            score++;
+                        } else {
+                            e.target.classList.add('incorrect');
+                            feedbackDiv.className = 'feedback visible incorrect-fb';
+                            feedbackDiv.textContent = selectedOption.reason;
+                        }
+
+                        nextBtn.disabled = false;
+                    });
+                });
+
+                questionsContainer.appendChild(questionBox);
+            });
+            updateNavigation();
+        }
+
+        function updateNavigation() {
+            progressText.textContent = `Вопрос ${currentQuestionIndex + 1} из ${quizData.length}`;
+            prevBtn.disabled = currentQuestionIndex === 0;
+            
+            if (userAnswers[currentQuestionIndex] !== null) {
+                nextBtn.disabled = false;
+                nextBtn.textContent = currentQuestionIndex === quizData.length - 1 ? 'Завершить' : 'Вперед';
+            } else {
+                nextBtn.disabled = true;
+                nextBtn.textContent = 'Вперед';
+            }
+        }
+
+        nextBtn.addEventListener('click', () => {
+            if (userAnswers[currentQuestionIndex] === null) return;
+
+            if (currentQuestionIndex < quizData.length - 1) {
+                document.getElementById(`q-${currentQuestionIndex}`).classList.remove('active');
+                currentQuestionIndex++;
+                document.getElementById(`q-${currentQuestionIndex}`).classList.add('active');
+                updateNavigation();
+            } else {
+                showResults();
+            }
+        });
+
+        prevBtn.addEventListener('click', () => {
+            if (currentQuestionIndex > 0) {
+                document.getElementById(`q-${currentQuestionIndex}`).classList.remove('active');
+                currentQuestionIndex--;
+                document.getElementById(`q-${currentQuestionIndex}`).classList.add('active');
+                updateNavigation();
+            }
+        });
+
+        function showResults() {
+            questionsContainer.style.display = 'none';
+            document.querySelector('.nav-buttons').style.display = 'none';
+            progressText.style.display = 'none';
+
+            scoreText.textContent = `${score} / ${quizData.length}`;
+            
+            let comment = "";
+            if (score === quizData.length) {
+                comment = "Великолепный результат! Вы идеально сдали усложненную тему линейной функции. Удачи на ОГЭ!";
+            } else if (score >= 7) {
+                comment = "Хороший результат! Большинство сложных задач решено верно. Вы уверенно владеете темой.";
+            } else if (score >= 5) {
+                comment = "Базовый уровень пройден, но аналитические и геометрические задачи вызвали затруднения. Стоит повторить вывод уравнений прямой.";
+            } else {
+                comment = "Тема усвоена слабо. Рекомендуется заново разобрать геометрический смысл коэффициентов k и b, алгоритмы пересечения графиков и формулы площадей.";
+            }
+            
+            resultComment.textContent = comment;
+            resultBox.style.display = 'block';
+        }
+
+        initQuiz();
+    });
+</script>
+</body>
+</html>
